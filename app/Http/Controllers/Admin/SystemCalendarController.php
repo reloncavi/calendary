@@ -3,61 +3,77 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Venue;
-use Carbon\Carbon;
+use App\Models\Venue;
 
 class SystemCalendarController extends Controller
 {
     public $sources = [
         [
-            'model'      => '\\App\\Event',
+            'model'      => \App\Models\Event::class,
             'start_time' => 'start_time',
             'end_time'   => 'end_time',
             'field'      => 'name',
-            'prefix'     => 'Event',
+            'prefix'     => 'Evento:',
             'suffix'     => '',
+            'color'      => '#3788d8',
             'route'      => 'admin.events.edit',
         ],
         [
-            'model'      => '\\App\\Meeting',
+            'model'      => \App\Models\Meeting::class,
             'start_time' => 'start_time',
             'end_time'   => 'end_time',
             'field'      => 'attendees',
-            'prefix'     => 'Meeting with',
+            'prefix'     => 'Reunión:',
             'suffix'     => '',
+            'color'      => '#28a745',
             'route'      => 'admin.meetings.edit',
+        ],
+        [
+            'model'      => \App\Models\EquipmentLoan::class,
+            'start_time' => 'start_time',
+            'end_time'   => 'end_time',
+            'field'      => 'borrower_name',
+            'prefix'     => 'Préstamo:',
+            'suffix'     => '',
+            'color'      => '#fd7e14',
+            'route'      => 'admin.equipment-loans.edit',
         ],
     ];
 
     public function index()
     {
-        $events = [];
-
+        $calendarEvents = [];
         $venues = Venue::all();
 
         foreach ($this->sources as $source) {
-            $calendarEvents = $source['model']::when(request('venue_id') && $source['model'] == '\App\Event', function($query) {
-                return $query->where('venue_id', request('venue_id'));
-            })->get();
-            foreach ($calendarEvents as $model) {
-                $start_time = $model->getOriginal($source['start_time']);
+            $modelClass = $source['model'];
 
-                $end_time = $model->getOriginal($source['end_time']);
+            $query = $modelClass::query();
 
-                if (!$start_time) {
+            // Filter by venue only for Event model
+            if (request('venue_id') && $modelClass === \App\Models\Event::class) {
+                $query->where('venue_id', request('venue_id'));
+            }
+
+            foreach ($query->get() as $model) {
+                $start = $model->getOriginal($source['start_time']);
+                $end   = $model->getOriginal($source['end_time']);
+
+                if (!$start) {
                     continue;
                 }
 
-                $events[] = [
-                    'title' => trim($source['prefix'] . " " . $model->{$source['field']}
-                        . " " . $source['suffix']),
-                    'start' => $start_time,
-                    'end' => $end_time,
-                    'url'   => route('admin.events.update', $model->id),
+                $calendarEvents[] = [
+                    'title'           => trim($source['prefix'] . ' ' . $model->{$source['field']}),
+                    'start'           => $start,
+                    'end'             => $end,
+                    'url'             => route($source['route'], $model->id),
+                    'backgroundColor' => $source['color'],
+                    'borderColor'     => $source['color'],
                 ];
             }
         }
 
-        return view('admin.calendar.calendar', compact('events', 'venues'));
+        return view('admin.calendar.calendar', compact('calendarEvents', 'venues'));
     }
 }

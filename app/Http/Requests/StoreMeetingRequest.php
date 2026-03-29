@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Meeting;
+use App\Models\Meeting;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,9 +19,15 @@ class StoreMeetingRequest extends FormRequest
     public function rules()
     {
         return [
+            'attendees'  => ['required', 'string', 'max:255'],
             'start_time' => [
+                'required',
                 'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
-                'nullable',
+            ],
+            'end_time' => [
+                'required',
+                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
+                'after:start_time',
             ],
         ];
     }

@@ -1,32 +1,32 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import './bootstrap';
+import flatpickr from 'flatpickr';
+import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
-require('./bootstrap');
+// Initialize datetime pickers on all pages
+document.addEventListener('DOMContentLoaded', function () {
+    const datetimeConfig = {
+        enableTime: true,
+        dateFormat: 'Y-m-d H:i:S',
+        time_24hr: true,
+        locale: Spanish,
+    };
 
-window.Vue = require('vue');
+    const dateConfig = {
+        enableTime: false,
+        dateFormat: 'Y-m-d',
+        locale: Spanish,
+    };
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+    document.querySelectorAll('.flatpickr-datetime').forEach(el => {
+        flatpickr(el, datetimeConfig);
+    });
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+    document.querySelectorAll('.flatpickr-date').forEach(el => {
+        flatpickr(el, dateConfig);
+    });
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-const app = new Vue({
-    el: '#app',
+    // Select2 initialization via jQuery (still used by DataTables and Select2)
+    if (window.jQuery && window.$.fn.select2) {
+        window.$('.select2').select2({ width: '100%' });
+    }
 });

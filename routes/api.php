@@ -1,21 +1,22 @@
 <?php
 
-Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth:api']], function () {
-    // Permissions
-    Route::apiResource('permissions', 'PermissionsApiController');
+use App\Http\Controllers\Api\V1\Admin\EventsApiController;
+use App\Http\Controllers\Api\V1\Admin\EquipmentApiController;
+use App\Http\Controllers\Api\V1\Admin\EquipmentLoansApiController;
+use App\Http\Controllers\Api\V1\Admin\MeetingsApiController;
+use App\Http\Controllers\Api\V1\Admin\PermissionsApiController;
+use App\Http\Controllers\Api\V1\Admin\RolesApiController;
+use App\Http\Controllers\Api\V1\Admin\UsersApiController;
+use App\Http\Controllers\Api\V1\Admin\VenuesApiController;
+use Illuminate\Support\Facades\Route;
 
-    // Roles
-    Route::apiResource('roles', 'RolesApiController');
-
-    // Users
-    Route::apiResource('users', 'UsersApiController');
-
-    // Venues
-    Route::apiResource('venues', 'VenuesApiController');
-
-    // Events
-    Route::apiResource('events', 'EventsApiController');
-
-    // Meetings
-    Route::apiResource('meetings', 'MeetingsApiController');
+Route::group(['prefix' => 'v1', 'as' => 'api.', 'middleware' => ['auth:sanctum']], function () {
+    Route::apiResource('permissions', PermissionsApiController::class);
+    Route::apiResource('roles', RolesApiController::class);
+    Route::apiResource('users', UsersApiController::class);
+    Route::apiResource('venues', VenuesApiController::class);
+    Route::apiResource('events', EventsApiController::class);
+    Route::apiResource('meetings', MeetingsApiController::class);
+    Route::apiResource('equipment', EquipmentApiController::class);
+    Route::apiResource('equipment-loans', EquipmentLoansApiController::class);
 });

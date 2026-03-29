@@ -9,28 +9,46 @@
     <div class="card-body">
         <form action="{{ route("admin.meetings.store") }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="form-group {{ $errors->has('attendees') ? 'has-error' : '' }}">
+            <div class="mb-3">
                 <label for="attendees">{{ trans('cruds.meeting.fields.attendees') }}</label>
-                <input type="text" id="attendees" name="attendees" class="form-control" value="{{ old('attendees', isset($meeting) ? $meeting->attendees : '') }}">
+                <input type="text" id="attendees" name="attendees"
+                    class="form-control {{ $errors->has('attendees') ? 'is-invalid' : '' }}"
+                    value="{{ old('attendees', isset($meeting) ? $meeting->attendees : '') }}">
                 @if($errors->has('attendees'))
-                    <em class="invalid-feedback">
+                    <div class="invalid-feedback">
                         {{ $errors->first('attendees') }}
-                    </em>
+                    </div>
                 @endif
                 <p class="helper-block">
                     {{ trans('cruds.meeting.fields.attendees_helper') }}
                 </p>
             </div>
-            <div class="form-group {{ $errors->has('start_time') ? 'has-error' : '' }}">
+            <div class="mb-3">
                 <label for="start_time">{{ trans('cruds.meeting.fields.start_time') }}</label>
-                <input type="text" id="start_time" name="start_time" class="form-control datetime" value="{{ old('start_time', isset($meeting) ? $meeting->start_time : '') }}">
+                <input type="text" id="start_time" name="start_time"
+                    class="form-control flatpickr-datetime {{ $errors->has('start_time') ? 'is-invalid' : '' }}"
+                    value="{{ old('start_time', isset($meeting) ? $meeting->start_time : '') }}">
                 @if($errors->has('start_time'))
-                    <em class="invalid-feedback">
+                    <div class="invalid-feedback">
                         {{ $errors->first('start_time') }}
-                    </em>
+                    </div>
                 @endif
                 <p class="helper-block">
                     {{ trans('cruds.meeting.fields.start_time_helper') }}
+                </p>
+            </div>
+            <div class="mb-3">
+                <label for="end_time">{{ trans('cruds.meeting.fields.end_time') }}</label>
+                <input type="text" id="end_time" name="end_time"
+                    class="form-control flatpickr-datetime {{ $errors->has('end_time') ? 'is-invalid' : '' }}"
+                    value="{{ old('end_time', isset($meeting) ? $meeting->end_time : '') }}">
+                @if($errors->has('end_time'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('end_time') }}
+                    </div>
+                @endif
+                <p class="helper-block">
+                    {{ trans('cruds.meeting.fields.end_time_helper') }}
                 </p>
             </div>
             <div>

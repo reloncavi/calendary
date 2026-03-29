@@ -34,6 +34,14 @@
                             {{ $meeting->start_time }}
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.meeting.fields.end_time') }}
+                        </th>
+                        <td>
+                            {{ $meeting->end_time }}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <a style="margin-top:20px;" class="btn btn-default" href="{{ url()->previous() }}">
