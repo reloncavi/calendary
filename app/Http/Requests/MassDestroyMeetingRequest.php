@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Meeting;
+use App\Models\Meeting;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;

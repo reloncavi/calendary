@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use App\Event;
+use App\Models\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
@@ -17,7 +17,7 @@ class EventsApiController extends Controller
     {
         abort_if(Gate::denies('event_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new EventResource(Event::with(['venue'])->get());
+        return EventResource::collection(Event::with(['venue'])->get());
     }
 
     public function store(StoreEventRequest $request)

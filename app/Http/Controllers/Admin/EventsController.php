@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyEventRequest;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
-use App\Venue;
+use App\Models\Event;
+use App\Models\Venue;
 use Gate;
-use App\Session;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +18,7 @@ class EventsController extends Controller
     {
         abort_if(Gate::denies('event_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $events = Event::all();
+        $events = Event::with('venue')->get();
 
         return view('admin.events.index', compact('events'));
     }
@@ -35,49 +34,26 @@ class EventsController extends Controller
 
     public function store(StoreEventRequest $request)
     {
-        $startTime = date('Y-m-d H:i', strtotime($request->input('start_time')));
-        $endTime = date('Y-m-d H:i', strtotime($request->input('end_time')));
-        $venue_id = $request->input('venue_id');
+        $startTime = date('Y-m-d H:i:s', strtotime($request->input('start_time')));
+        $endTime   = date('Y-m-d H:i:s', strtotime($request->input('end_time')));
+        $venueId   = $request->input('venue_id');
 
-        if($startTime > $endTime)
-        {
-          Session()->flash('message', 'intervalo de tiempo no valido');
-          Session()->flash('alert-class', 'alert-danger');
+        $conflictExists = Event::where('venue_id', $venueId)
+            ->where('start_time', '<', $endTime)
+            ->where('end_time', '>', $startTime)
+            ->exists();
 
-          return redirect()->back()->withInput();
+        if ($conflictExists) {
+            Session()->flash('message', 'Ya existe un evento para esa sala en ese horario');
+            Session()->flash('alert-class', 'alert-danger');
+
+            return redirect()->back()->withInput();
         }
 
-        $eventsCount = Event::where(function ($query) use ($startTime, $endTime, $venue_id) {
-         $query->where(function ($query) use ($startTime, $endTime,$venue_id) {
-            $query->where('start_time', '>=', $startTime)
-                    ->where('end_time', '<', $startTime)
-                    ->where('venue_id', $venue_id);
-            })
-            ->orWhere(function ($query) use ($startTime, $endTime, $venue_id) {
-                $query->where('start_time', '<', $endTime)
-                        ->where('end_time', '>=', $endTime)
-                        ->where('venue_id', $venue_id);
-            });
-        })->count();
+        Event::create($request->all());
 
-      if($eventsCount>0)
-      {
-        Session()->flash('message', 'Ya existe un evento para esa fecha');
-        Session()->flash('alert-class', 'alert-danger');
-
-        return redirect()->back()->withInput();
-      }
-      else
-      {
-        $event = Event::create($request->all());
-
-        Session()->flash('message', 'Evento creado con exito');
+        Session()->flash('message', 'Evento creado con éxito');
         Session()->flash('alert-class', 'alert-success');
-
-        //envio de correo a usuario encargado
-      }
-
-
 
         return redirect()->route('admin.events.index');
     }
@@ -95,50 +71,29 @@ class EventsController extends Controller
 
     public function update(UpdateEventRequest $request, Event $event)
     {
-      $startTime = date('Y-m-d H:i', strtotime($request->input('start_time')));
-      $endTime = date('Y-m-d H:i', strtotime($request->input('end_time')));
+        $startTime = date('Y-m-d H:i:s', strtotime($request->input('start_time')));
+        $endTime   = date('Y-m-d H:i:s', strtotime($request->input('end_time')));
+        $venueId   = $request->input('venue_id');
 
-      if($startTime > $endTime)
-      {
-        Session()->flash('message', 'intervalo de tiempo no valido');
-        Session()->flash('alert-class', 'alert-danger');
+        $conflictExists = Event::where('venue_id', $venueId)
+            ->where('id', '!=', $event->id)
+            ->where('start_time', '<', $endTime)
+            ->where('end_time', '>', $startTime)
+            ->exists();
 
-        return redirect()->back()->withInput();
-      }
-      $venue_id = $request->input('venue_id');
+        if ($conflictExists) {
+            Session()->flash('message', 'Ya existe un evento para esa sala en ese horario');
+            Session()->flash('alert-class', 'alert-danger');
 
-      $eventsCount = Event::where(function ($query) use ($startTime, $endTime, $venue_id) {
-       $query->where(function ($query) use ($startTime, $endTime,$venue_id) {
-          $query->where('start_time', '>=', $startTime)
-                  ->where('end_time', '<', $startTime)
-                  ->where('venue_id', $venue_id);
-          })
-          ->orWhere(function ($query) use ($startTime, $endTime, $venue_id) {
-              $query->where('start_time', '<', $endTime)
-                      ->where('end_time', '>=', $endTime)
-                      ->where('venue_id', $venue_id);
-          });
-      })->count();
+            return redirect()->back()->withInput();
+        }
 
-    if($eventsCount>0)
-    {
-      Session()->flash('message', 'Ya existe un evento para esa fecha');
-      Session()->flash('alert-class', 'alert-danger');
+        $event->update($request->all());
 
-      return redirect()->back()->withInput();
-    }
-    else
-    {
-      $event->update($request->all());
+        Session()->flash('message', 'Evento actualizado con éxito');
+        Session()->flash('alert-class', 'alert-success');
 
-      Session()->flash('message', 'Evento actualizado con exito');
-      Session()->flash('alert-class', 'alert-success');
-
-      return redirect()->route('admin.events.index');
-    }
-
-
-
+        return redirect()->route('admin.events.index');
     }
 
     public function show(Event $event)
@@ -155,8 +110,10 @@ class EventsController extends Controller
         abort_if(Gate::denies('event_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $event->delete();
-        Session()->flash('message', 'Evento borrado con exito');
+
+        Session()->flash('message', 'Evento eliminado');
         Session()->flash('alert-class', 'alert-warning');
+
         return back();
     }
 
@@ -164,7 +121,7 @@ class EventsController extends Controller
     {
         Event::whereIn('id', request('ids'))->delete();
 
-        Session()->flash('message', 'Eventos borrados con exito');
+        Session()->flash('message', 'Eventos eliminados');
         Session()->flash('alert-class', 'alert-warning');
 
         return response(null, Response::HTTP_NO_CONTENT);

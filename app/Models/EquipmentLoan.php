@@ -1,33 +1,30 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Event extends Model
+class EquipmentLoan extends Model
 {
     use SoftDeletes;
 
-    public $table = 'events';
-
-    protected $dates = [
-        'start_time',
-        'end_time',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
+    public $table = 'equipment_loans';
 
     protected $fillable = [
-        'name',
-        'venue_id',
+        'equipment_id',
+        'borrower_name',
+        'purpose',
         'start_time',
         'end_time',
-        'created_at',
-        'updated_at',
-        'deleted_at',
+        'returned_at',
+        'notes',
+    ];
+
+    protected $casts = [
+        'returned_at' => 'datetime',
+        'deleted_at'  => 'datetime',
     ];
 
     public function getStartTimeAttribute($value)
@@ -50,8 +47,13 @@ class Event extends Model
         $this->attributes['end_time'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }
 
-    public function venue()
+    public function equipment()
     {
-        return $this->belongsTo(Venue::class, 'venue_id');
+        return $this->belongsTo(Equipment::class);
+    }
+
+    public function isReturned(): bool
+    {
+        return $this->returned_at !== null;
     }
 }

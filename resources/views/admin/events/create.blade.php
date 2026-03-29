@@ -9,53 +9,60 @@
     <div class="card-body">
         <form action="{{ route("admin.events.store") }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+            <div class="mb-3">
                 <label for="name">{{ trans('cruds.event.fields.name') }}</label>
-                <input type="text" id="name" name="name" class="form-control" value="{{ old('name', isset($event) ? $event->name : '') }}">
+                <input type="text" id="name" name="name"
+                    class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                    value="{{ old('name', isset($event) ? $event->name : '') }}">
                 @if($errors->has('name'))
-                    <em class="invalid-feedback">
+                    <div class="invalid-feedback">
                         {{ $errors->first('name') }}
-                    </em>
+                    </div>
                 @endif
                 <p class="helper-block">
                     {{ trans('cruds.event.fields.name_helper') }}
                 </p>
             </div>
-            <div class="form-group {{ $errors->has('start_time') ? 'has-error' : '' }}">
+            <div class="mb-3">
                 <label for="start_time">{{ trans('cruds.event.fields.start_time') }}</label>
-                <input type="text" id="start_time" name="start_time" class="form-control datetime" value="{{ old('start_time', isset($event) ? $event->start_time : '') }}">
+                <input type="text" id="start_time" name="start_time"
+                    class="form-control flatpickr-datetime {{ $errors->has('start_time') ? 'is-invalid' : '' }}"
+                    value="{{ old('start_time', isset($event) ? $event->start_time : '') }}">
                 @if($errors->has('start_time'))
-                    <em class="invalid-feedback">
+                    <div class="invalid-feedback">
                         {{ $errors->first('start_time') }}
-                    </em>
+                    </div>
                 @endif
                 <p class="helper-block">
                     {{ trans('cruds.event.fields.start_time_helper') }}
                 </p>
             </div>
-            <div class="form-group {{ $errors->has('end_time') ? 'has-error' : '' }}">
+            <div class="mb-3">
                 <label for="end_time">{{ trans('cruds.event.fields.end_time') }}</label>
-                <input type="text" id="end_time" name="end_time" class="form-control datetime" onchange="validarmeses();" value="{{ old('end_time', isset($event) ? $event->end_time : '') }}">
+                <input type="text" id="end_time" name="end_time"
+                    class="form-control flatpickr-datetime {{ $errors->has('end_time') ? 'is-invalid' : '' }}"
+                    value="{{ old('end_time', isset($event) ? $event->end_time : '') }}">
                 @if($errors->has('end_time'))
-                    <em class="invalid-feedback">
+                    <div class="invalid-feedback">
                         {{ $errors->first('end_time') }}
-                    </em>
+                    </div>
                 @endif
                 <p class="helper-block">
                     {{ trans('cruds.event.fields.end_time_helper') }}
                 </p>
             </div>
-            <div class="form-group {{ $errors->has('venue_id') ? 'has-error' : '' }}">
+            <div class="mb-3">
                 <label for="venue">{{ trans('cruds.event.fields.venue') }}</label>
-                <select name="venue_id" id="venue" class="form-control select2">
+                <select name="venue_id" id="venue"
+                    class="form-control select2 {{ $errors->has('venue_id') ? 'is-invalid' : '' }}">
                     @foreach($venues as $id => $venue)
                         <option value="{{ $id }}" {{ (isset($event) && $event->venue ? $event->venue->id : old('venue_id')) == $id ? 'selected' : '' }}>{{ $venue }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('venue_id'))
-                    <em class="invalid-feedback">
+                    <div class="invalid-feedback">
                         {{ $errors->first('venue_id') }}
-                    </em>
+                    </div>
                 @endif
             </div>
             <div>
@@ -64,17 +71,4 @@
         </form>
     </div>
 </div>
-
-<script type="text/javascript">
-   $(function () {
-       $('#start_time').datetimepicker({
-           locale: 'es',icons: {
-               time: "fa fa-clock-o",
-               date: "fa fa-calendar",
-               up: "fa fa-arrow-up",
-               down: "fa fa-arrow-down"
-           }
-       });
-   });
-</script>
 @endsection

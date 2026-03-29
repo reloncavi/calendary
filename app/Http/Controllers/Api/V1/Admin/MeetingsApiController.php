@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMeetingRequest;
 use App\Http\Requests\UpdateMeetingRequest;
 use App\Http\Resources\Admin\MeetingResource;
-use App\Meeting;
+use App\Models\Meeting;
 use Gate;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class MeetingsApiController extends Controller
@@ -17,7 +16,7 @@ class MeetingsApiController extends Controller
     {
         abort_if(Gate::denies('meeting_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new MeetingResource(Meeting::all());
+        return MeetingResource::collection(Meeting::all());
     }
 
     public function store(StoreMeetingRequest $request)

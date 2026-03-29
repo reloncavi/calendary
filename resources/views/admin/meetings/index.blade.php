@@ -32,6 +32,9 @@
                             {{ trans('cruds.meeting.fields.start_time') }}
                         </th>
                         <th>
+                            {{ trans('cruds.meeting.fields.end_time') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -50,6 +53,9 @@
                             </td>
                             <td>
                                 {{ $meeting->start_time ?? '' }}
+                            </td>
+                            <td>
+                                {{ $meeting->end_time ?? '' }}
                             </td>
                             <td>
                                 @can('meeting_show')
@@ -124,7 +130,7 @@
     pageLength: 100,
   });
   $('.datatable-Meeting:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+    $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();
     });

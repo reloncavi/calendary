@@ -12,7 +12,7 @@
             </li>
             @can('user_management_access')
                 <li class="nav-item nav-dropdown">
-                    <a class="nav-link  nav-dropdown-toggle" href="#">
+                    <a class="nav-link nav-dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#userManagementMenu">
                         <i class="fa-fw fas fa-users nav-icon">
 
                         </i>
@@ -55,7 +55,7 @@
             @can('venue_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.venues.index") }}" class="nav-link {{ request()->is('admin/venues') || request()->is('admin/venues/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fa-fw fas fa-building nav-icon">
 
                         </i>
                         {{ trans('cruds.venue.title') }}
@@ -65,7 +65,7 @@
             @can('event_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.events.index") }}" class="nav-link {{ request()->is('admin/events') || request()->is('admin/events/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fa-fw fas fa-calendar-day nav-icon">
 
                         </i>
                         {{ trans('cruds.event.title') }}
@@ -75,13 +75,33 @@
             @can('meeting_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.meetings.index") }}" class="nav-link {{ request()->is('admin/meetings') || request()->is('admin/meetings/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fa-fw fas fa-users nav-icon">
 
                         </i>
                         {{ trans('cruds.meeting.title') }}
                     </a>
                 </li>
-            @endcan<!--
+            @endcan
+            @can('equipment_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.equipment.index") }}" class="nav-link {{ request()->is('admin/equipment') || request()->is('admin/equipment/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-tools nav-icon">
+
+                        </i>
+                        {{ trans('cruds.equipment.title') }}
+                    </a>
+                </li>
+            @endcan
+            @can('equipment_loan_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.equipment-loans.index") }}" class="nav-link {{ request()->is('admin/equipment-loans') || request()->is('admin/equipment-loans/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-hand-holding nav-icon">
+
+                        </i>
+                        {{ trans('cruds.equipmentLoan.title') }}
+                    </a>
+                </li>
+            @endcan
             <li class="nav-item">
                 <a href="{{ route("admin.systemCalendar") }}" class="nav-link {{ request()->is('admin/system-calendar') || request()->is('admin/system-calendar/*') ? 'active' : '' }}">
                     <i class="nav-icon fa-fw fas fa-calendar">
@@ -89,7 +109,7 @@
                     </i>
                     {{ trans('global.systemCalendar') }}
                 </a>
-            </li>-->
+            </li>
             <li class="nav-item">
                 <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">
