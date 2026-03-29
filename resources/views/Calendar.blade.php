@@ -7,16 +7,18 @@
     </div>
 
     <div class="card-body">
-        <form action="{{ route('Calendary') }}" method="GET">
-            Venue:
-            <select name="venue_id">
-                <option value="">-- all venues --</option>
+        <form action="{{ route('Calendary') }}" method="GET" class="calendar-filter">
+            <label for="venue_filter">{{ trans('cruds.venue.title_singular') }}:</label>
+            <select name="venue_id" id="venue_filter" class="form-control" aria-label="{{ trans('cruds.venue.title_singular') }}">
+                <option value="">-- {{ trans('global.all') }} {{ trans('cruds.venue.title') }} --</option>
                 @foreach($venues as $venue)
                     <option value="{{ $venue->id }}"
                             @if (request('venue_id') == $venue->id) selected @endif>{{ $venue->name }}</option>
                 @endforeach
             </select>
-            <button type="submit" class="btn btn-sm btn-primary">Filter</button>
+            <button type="submit" class="btn btn-sm btn-primary">
+                <i class="fas fa-filter"></i> {{ trans('global.filterDate') }}
+            </button>
         </form>
 
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
@@ -55,7 +57,7 @@
                 day: "Dia"
               },
               
-              eventColor: 'gray',
+              eventColor: '#006cb7',
               monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
               monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
               dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
