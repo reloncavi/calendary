@@ -1,9 +1,9 @@
 <div class="sidebar">
-    <nav class="sidebar-nav">
+    <nav class="sidebar-nav" role="navigation" aria-label="{{ trans('global.toggleNavigation') }}">
 
         <ul class="nav">
             <li class="nav-item">
-                <a href="{{ route("admin.systemCalendar") }}" class="nav-link">
+                <a href="{{ route("admin.systemCalendar") }}" class="nav-link" aria-label="{{ trans('global.dashboard') }}">
                     <i class="nav-icon fas fa-fw fa-tachometer-alt">
 
                     </i>
@@ -55,7 +55,7 @@
             @can('venue_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.venues.index") }}" class="nav-link {{ request()->is('admin/venues') || request()->is('admin/venues/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fa-fw fas fa-building nav-icon">
 
                         </i>
                         {{ trans('cruds.venue.title') }}
@@ -65,7 +65,7 @@
             @can('event_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.events.index") }}" class="nav-link {{ request()->is('admin/events') || request()->is('admin/events/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fa-fw fas fa-calendar-alt nav-icon">
 
                         </i>
                         {{ trans('cruds.event.title') }}
@@ -75,23 +75,15 @@
             @can('meeting_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.meetings.index") }}" class="nav-link {{ request()->is('admin/meetings') || request()->is('admin/meetings/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fa-fw fas fa-handshake nav-icon">
 
                         </i>
                         {{ trans('cruds.meeting.title') }}
                     </a>
                 </li>
-            @endcan<!--
+            @endcan
             <li class="nav-item">
-                <a href="{{ route("admin.systemCalendar") }}" class="nav-link {{ request()->is('admin/system-calendar') || request()->is('admin/system-calendar/*') ? 'active' : '' }}">
-                    <i class="nav-icon fa-fw fas fa-calendar">
-
-                    </i>
-                    {{ trans('global.systemCalendar') }}
-                </a>
-            </li>-->
-            <li class="nav-item">
-                <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
+                <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();" aria-label="{{ trans('global.logout') }}">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">
 
                     </i>
@@ -101,5 +93,5 @@
         </ul>
 
     </nav>
-    <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+    <button class="sidebar-minimizer brand-minimizer" type="button" aria-label="Toggle sidebar"></button>
 </div>

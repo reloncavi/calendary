@@ -61,20 +61,30 @@ table.dataTable thead .sorting_desc {
 }
 
 .sidebar {
-background-color: rgba(00, 108, 183);
+    background-color: rgba(00, 108, 183);
 }
 
 .sidebar .nav-item {
     cursor: pointer;
     background-color: rgba(00, 108, 183);
 }
-.nav-item:hover 
-{
 
+.sidebar .nav-link {
+    transition: background-color 0.2s ease, padding-left 0.2s ease;
 }
+
+.sidebar .nav-item:hover > .nav-link {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding-left: 20px;
+}
+
+.sidebar .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
 .datepicker {
-background-color: #fff ;
-color: #333 ;
+    background-color: #fff ;
+    color: #333 ;
 }
 .btn-default {
     color: #23282c;
@@ -118,18 +128,57 @@ color: #333 ;
     padding-left: 0px;
     padding-right: 0px;
 }
+
+/* Calendar button styling */
+.fc-button {
+    border-radius: 4px !important;
+    transition: background-color 0.2s ease;
+}
+
 .fc-button .fc-button-inner:hover {
-    background-color: red;
+    background-color: #005a9c;
     color: #fff;
 }
 
 .fc-button.fc-state-active .fc-button-inner {
-    background-color: green;
+    background-color: #004a80;
     color: #fff;
 }
 
 .fc-button .fc-button-inner {
-    background-color: #000;
+    background-color: #006cb7;
     color: #fff;
 }
 
+/* Calendar filter form */
+.calendar-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.calendar-filter label {
+    font-weight: 600;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.calendar-filter select {
+    max-width: 300px;
+}
+
+/* Dashboard shortcut cards */
+.card a.text-decoration-none {
+    text-decoration: none;
+}
+
+.card a.text-decoration-none .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card a.text-decoration-none:hover .card {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

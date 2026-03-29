@@ -14,18 +14,20 @@ class SystemCalendarController extends Controller
             'start_time' => 'start_time',
             'end_time'   => 'end_time',
             'field'      => 'name',
-            'prefix'     => 'Event',
+            'prefix'     => 'Evento',
             'suffix'     => '',
             'route'      => 'admin.events.edit',
+            'color'      => '#006cb7',
         ],
         [
             'model'      => '\\App\\Meeting',
             'start_time' => 'start_time',
             'end_time'   => 'end_time',
             'field'      => 'attendees',
-            'prefix'     => 'Meeting with',
+            'prefix'     => 'Reunión con',
             'suffix'     => '',
             'route'      => 'admin.meetings.edit',
+            'color'      => '#28a745',
         ],
     ];
 
@@ -54,6 +56,7 @@ class SystemCalendarController extends Controller
                     'start' => $start_time,
                     'end' => $end_time,
                     'url'   => route('admin.events.update', $model->id),
+                    'color' => $source['color'],
                 ];
             }
         }
