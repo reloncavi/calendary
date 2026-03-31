@@ -16,7 +16,7 @@ class CalendarController extends Controller
             'end_time'   => 'end_time',
             'field'      => 'name',
             'prefix'     => 'Evento:',
-            'color'      => '#3788d8',
+            'color'      => '#6366F1',
             'route'      => 'admin.events.edit',
         ],
         [
@@ -25,7 +25,7 @@ class CalendarController extends Controller
             'end_time'   => 'end_time',
             'field'      => 'attendees',
             'prefix'     => 'Reunión:',
-            'color'      => '#28a745',
+            'color'      => '#10B981',
             'route'      => 'admin.meetings.edit',
         ],
         [
@@ -34,7 +34,7 @@ class CalendarController extends Controller
             'end_time'   => 'end_time',
             'field'      => 'borrower_name',
             'prefix'     => 'Préstamo:',
-            'color'      => '#fd7e14',
+            'color'      => '#F59E0B',
             'route'      => 'admin.equipment-loans.edit',
         ],
     ];
