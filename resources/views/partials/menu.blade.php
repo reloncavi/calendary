@@ -55,14 +55,6 @@
     {{-- Resources --}}
     <div class="sidebar-section-label">Recursos</div>
 
-    @can('establishment_access')
-        <a href="{{ route('admin.establishments.index') }}"
-           class="sidebar-nav-link {{ request()->is('admin/establishments') || request()->is('admin/establishments/*') ? 'active' : '' }}">
-            <i class="fas fa-city nav-icon"></i>
-            Establecimientos
-        </a>
-    @endcan
-
     @can('venue_access')
         <a href="{{ route('admin.venues.index') }}"
            class="sidebar-nav-link {{ request()->is('admin/venues') || request()->is('admin/venues/*') ? 'active' : '' }}">

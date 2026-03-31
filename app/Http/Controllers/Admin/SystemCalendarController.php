@@ -15,7 +15,7 @@ class SystemCalendarController extends Controller
             'field'      => 'name',
             'prefix'     => 'Evento:',
             'suffix'     => '',
-            'color'      => '#3788d8',
+            'color'      => '#6366F1',
             'route'      => 'admin.events.edit',
         ],
         [
@@ -25,7 +25,7 @@ class SystemCalendarController extends Controller
             'field'      => 'attendees',
             'prefix'     => 'Reunión:',
             'suffix'     => '',
-            'color'      => '#28a745',
+            'color'      => '#10B981',
             'route'      => 'admin.meetings.edit',
         ],
         [
@@ -35,7 +35,7 @@ class SystemCalendarController extends Controller
             'field'      => 'borrower_name',
             'prefix'     => 'Préstamo:',
             'suffix'     => '',
-            'color'      => '#fd7e14',
+            'color'      => '#F59E0B',
             'route'      => 'admin.equipment-loans.edit',
         ],
     ];

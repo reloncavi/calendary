@@ -46,10 +46,10 @@
                     <button class="header-icon-btn" data-bs-toggle="dropdown" aria-expanded="false" title="Idioma">
                         <i class="fas fa-globe"></i>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end" style="min-width:140px;border-radius:.875rem;border-color:var(--border);box-shadow:0 8px 24px rgba(0,0,0,.08)">
+                    <ul class="dropdown-menu dropdown-menu-end header-dropdown-menu">
                         @foreach(config('panel.available_languages') as $langLocale => $langName)
                             <li>
-                                <a class="dropdown-item" href="{{ url()->current() }}?change_language={{ $langLocale }}" style="font-size:.875rem;">
+                                <a class="dropdown-item header-dropdown-item" href="{{ url()->current() }}?change_language={{ $langLocale }}">
                                     {{ strtoupper($langLocale) }} — {{ $langName }}
                                 </a>
                             </li>
@@ -63,14 +63,14 @@
                     <div class="user-avatar">
                         {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
                     </div>
-                    <span class="d-none d-md-inline" style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                    <span class="header-username d-none d-md-inline">
                         {{ auth()->user()->name ?? 'Usuario' }}
                     </span>
-                    <i class="fas fa-chevron-down" style="font-size:.65rem;color:var(--text-muted);"></i>
+                    <i class="fas fa-chevron-down header-chevron"></i>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" style="min-width:180px;border-radius:.875rem;border-color:var(--border);box-shadow:0 8px 24px rgba(0,0,0,.08)">
+                <ul class="dropdown-menu dropdown-menu-end header-dropdown-menu" style="min-width:180px">
                     <li>
-                        <a class="dropdown-item text-danger" style="font-size:.875rem;" href="#"
+                        <a class="dropdown-item text-danger header-dropdown-item" href="#"
                            onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                             <i class="fas fa-sign-out-alt me-2"></i>{{ trans('global.logout') }}
                         </a>
