@@ -3,6 +3,7 @@ import $ from 'jquery';
 import * as bootstrap from 'bootstrap';
 import 'flatpickr/dist/flatpickr.css';
 import 'select2/dist/css/select2.min.css';
+import 'select2';
 
 // Make jQuery globally available (required by DataTables and Select2)
 window.$ = window.jQuery = $;
@@ -18,3 +19,4 @@ const token = document.head.querySelector('meta[name="csrf-token"]');
 if (token) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 }
+
